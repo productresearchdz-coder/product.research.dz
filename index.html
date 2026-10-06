@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Product Evaluation Platform</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loading-bar" hidden></div>
+
+  <div class="appbar">
+    <header class="topbar">
+      <div id="brand" class="brand" hidden>
+        <img id="brand-logo" class="brand-logo" alt="" hidden>
+        <span class="brand-title" data-i18n="app.title"></span>
+      </div>
+      <div class="controls">
+        <label class="sr-only" for="lang-select" data-i18n="lang.label"></label>
+        <select id="lang-select" class="field-sm">
+          <option value="ar">العربية</option>
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+        <button id="theme-btn" type="button" class="btn btn-ghost icon-btn"></button>
+        <button id="bell-btn" type="button" class="btn btn-ghost icon-btn bell" aria-haspopup="dialog" aria-expanded="false" aria-controls="notif-panel" hidden>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span id="bell-badge" class="bell-badge" dir="ltr" aria-hidden="true" hidden></span>
+        </button>
+        <button id="avatar-btn" type="button" class="avatar" aria-haspopup="dialog" aria-expanded="false" aria-controls="profile-card" hidden></button>
+      </div>
+    </header>
+    <nav id="main-nav" class="mainnav" hidden><ul id="nav-list"></ul></nav>
+
+    <div id="profile-card" class="profile-card" role="dialog" aria-labelledby="pc-name" hidden>
+      <button id="pc-close" type="button" class="btn btn-ghost icon-btn pc-close" data-i18n-aria="common.close">×</button>
+      <div class="pc-avatar-wrap">
+        <div id="pc-avatar" class="avatar avatar-lg"></div>
+        <button id="pc-pencil" type="button" class="pencil" data-i18n-aria="avatar.change">✎</button>
+      </div>
+      <p id="pc-name" class="pc-name"></p>
+      <p id="pc-role" class="muted"></p>
+      <div class="stack">
+        <button id="pc-change-name" type="button" class="btn btn-ghost" data-i18n="profile.changeName"></button>
+        <button id="pc-info" type="button" class="btn btn-ghost" data-i18n="profile.info"></button>
+        <button id="pc-chat" type="button" class="btn btn-ghost" data-i18n="profile.chat" disabled></button>
+        <button id="pc-logout" type="button" class="btn btn-primary" data-i18n="nav.logout"></button>
+      </div>
+    </div>
+
+    <div id="notif-panel" class="profile-card notif-panel" role="dialog" aria-labelledby="notif-title" hidden>
+      <div class="notif-head">
+        <h2 id="notif-title" class="notif-title" data-i18n="notif.title"></h2>
+        <button id="notif-close" type="button" class="btn btn-ghost icon-btn" data-i18n-aria="common.close">×</button>
+      </div>
+      <div id="notif-body" class="notif-body"></div>
+    </div>
+  </div>
+
+  <main>
+    <section id="view-loading" class="card center" aria-live="polite">
+      <p data-i18n="session.loading"></p>
+    </section>
+
+    <section id="view-login" class="card" hidden>
+      <img id="logo" class="logo" alt="" hidden>
+      <h1 data-i18n="app.title"></h1>
+
+      <div id="step-role">
+        <p class="muted" data-i18n="login.chooseRole"></p>
+        <div class="stack">
+          <button type="button" class="btn btn-primary" data-portal="admin" data-i18n="login.admin"></button>
+          <button type="button" class="btn btn-secondary" data-portal="contributor" data-i18n="login.contributor"></button>
+        </div>
+      </div>
+
+      <form id="login-form" novalidate hidden>
+        <h2 id="portal-title"></h2>
+        <div class="field">
+          <label for="email" data-i18n="login.email"></label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="username" dir="ltr" required>
+        </div>
+        <div class="field">
+          <label for="password" data-i18n="login.password"></label>
+          <input id="password" name="password" type="password" autocomplete="current-password" dir="ltr" required>
+        </div>
+        <p id="form-error" class="error" role="alert" hidden></p>
+        <div class="stack">
+          <button id="submit-btn" type="submit" class="btn btn-primary" data-i18n="login.signIn"></button>
+          <button id="back-btn" type="button" class="btn btn-ghost" data-i18n="login.back"></button>
+        </div>
+      </form>
+
+      <p id="global-error" class="error" role="alert" hidden></p>
+    </section>
+
+    <section id="view-module" class="module" hidden>
+      <h1 id="module-title"></h1>
+      <div class="empty"><p class="muted" data-i18n="module.soon"></p></div>
+      <div id="module-body" hidden></div>
+    </section>
+  </main>
+
+  <dialog id="modal" aria-labelledby="modal-title">
+    <div class="modal-inner">
+      <div class="modal-head">
+        <h2 id="modal-title"></h2>
+        <button id="modal-close" type="button" class="btn btn-ghost icon-btn" data-i18n-aria="common.close">×</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </dialog>
+
+  <div id="toasts" role="status" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="translations.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
